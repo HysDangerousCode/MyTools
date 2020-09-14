@@ -30,12 +30,12 @@
     //     endAngle: Math.PI * 2
     // }, ];
     const dataset = [
-        ["array", 3345],
-        ["object", 2345],
-        ["string", 5325],
-        ["boolean", 3615],
-        ["undefined", 3241],
-        ["symbol", 3331],
+        ["array", 3345, "red"],
+        ["object", 2345, "green"],
+        ["string", 5325, "brown"],
+        ["boolean", 3615, "orange"],
+        ["undefined", 3241, "orangered"],
+        ["symbol", 3331, "blue"],
     ];
     const pie = d3.pie().value(d => d[1]);
     const pieData = pie(dataset);
@@ -47,7 +47,7 @@
         .innerRadius(0) //内半径
         .outerRadius(300); //外半径
     svg.selectAll("path").data(pieData).enter().append("path").attr("d", d => arcPath(d)).attr("transform", "translate(400,400)")
-        .attr("stroke", "#000").attr("stroke-width", "0px").attr("fill", (d, i) => color(i));
+        .attr("stroke", "#000").attr("stroke-width", "0px").attr("fill", (d) => d.data[2]);
     svg.selectAll("text").data(pieData).enter().append("text")
         .attr("transform", d => "translate(400,400)" + `translate(${arcPath.centroid(d)})`)
         .attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", "14px")
