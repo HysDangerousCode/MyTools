@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>饼状图</title>
+</head>
+
+<body>
+    <!-- 饼状图容器 -->
+    <div id="pie_chart"></div>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/d3/4.10.0/d3.js"></script>
+<script>
+    const svg = d3.select("#pie_chart").append("svg")
+        .attr("width", "800") //画布的宽
+        .attr("height", "800"); //画布的高
+    // const dataset = [{
+    //     startAngle: 0,
+    //     endAngle: Math.PI * 0.6
+    // }, {
+    //     startAngle: Math.PI * 0.6,
+    //     endAngle: Math.PI
+    // }, {
+    //     startAngle: Math.PI,
+    //     endAngle: Math.PI * 1.7
+    // }, {
+    //     startAngle: Math.PI * 1.7,
+    //     endAngle: Math.PI * 2
+    // }, ];
+    const dataset = [
+        ["array", 3345],
+        ["object", 2345],
+        ["string", 5325],
+        ["boolean", 3615],
+        ["undefined", 3241],
+        ["symbol", 3331],
+    ];
+    const pie = d3.pie().value(d => d[1]);
+    const pieData = pie(dataset);
+    // console.log(dataset);
+    // console.log(pieData);
+    // 颜色生成器
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const arcPath = d3.arc()
+        .innerRadius(0) //内半径
+        .outerRadius(300); //外半径
+    svg.selectAll("path").data(pieData).enter().append("path").attr("d", d => arcPath(d)).attr("transform", "translate(400,400)")
+        .attr("stroke", "#000").attr("stroke-width", "0px").attr("fill", (d, i) => color(i));
+    svg.selectAll("text").data(pieData).enter().append("text")
+        .attr("transform", d => "translate(400,400)" + `translate(${arcPath.centroid(d)})`)
+        .attr("text-anchor", "middle").attr("fill", "#fff").attr("font-size", "14px")
+        .text(d => d.data[0]);
+</script>
+
+</html>
